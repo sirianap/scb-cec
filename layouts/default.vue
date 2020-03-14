@@ -74,6 +74,11 @@ export default {
           icon: 'mdi-cash-100',
           title: 'Pembayaran',
           to: '/pembayaran'
+        },
+        {
+          icon: 'mdi-cash-refund',
+          title: 'Top up siswa',
+          to: '/top-up'
         }
       ],
       title: 'Sistem Pembayaran CEC'
