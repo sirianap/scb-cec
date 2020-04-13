@@ -18,7 +18,7 @@
           </v-list-item-content>
         </v-list-item>
       </template>
-      <v-list>
+      <v-list flat>
         <v-list-item v-for="(item, i) in items" :key="i" :to="item.to" router exact color="green">
           <v-list-item-action>
             <v-icon>{{ item.icon }}</v-icon>
