@@ -29,7 +29,7 @@
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
-    <v-app-bar clipped-left fixed app color="green" dark>
+    <v-app-bar clipped-left clipped-right fixed app color="green" dark>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-spacer />
       <img
@@ -67,8 +67,8 @@ export default {
         },
         {
           icon: 'mdi-account-group',
-          title: 'Daftar siswa',
-          to: '/daftar-siswa'
+          title: 'Siswa',
+          to: '/siswa'
         },
         {
           icon: 'mdi-cash-100',
@@ -76,9 +76,9 @@ export default {
           to: '/pembayaran'
         },
         {
-          icon: 'mdi-cash-refund',
-          title: 'Top up siswa',
-          to: '/top-up'
+          icon: 'mdi-tools',
+          title: 'Admin',
+          to: '/administrator'
         }
       ],
       title: 'Sistem Pembayaran CEC'

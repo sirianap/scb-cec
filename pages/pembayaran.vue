@@ -1,21 +1,21 @@
 <template>
-  <v-layout row justify-center align-center>
+  <v-layout row justify-center align-center fill-height>
     <v-flex md12 xs12 sm12 lg12>
-      <v-card height="400px">
+      <v-card>
         <v-card-text class="pb-0">
           <video id="player" ref="player" preload autoplay width="100%" height="350px"></video>
         </v-card-text>
       </v-card>
     </v-flex>
     <v-flex md12 xs12 sm12 lg12>
-      <v-card>
+      <v-card class="pembayaran">
         <v-card-title>
           Pembayaran
           <v-spacer></v-spacer>
           <v-btn color="green" disabled>Scan Barcode</v-btn>
         </v-card-title>
         <v-card-text>
-          <v-text-field label="NISN Siswa" color="green" outlined></v-text-field>
+          <v-text-field label="NISN Siswa" color="green" outlined hide-details></v-text-field>
         </v-card-text>
         <v-card-actions>
           <v-btn block color="green" dark @click.stop="dialog_pembayaran = true">Bayar</v-btn>
@@ -92,4 +92,11 @@ export default {
 }
 </script>
 
-<style></style>
+<style scoped>
+.pembayaran {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+</style>
