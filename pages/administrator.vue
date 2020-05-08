@@ -3,9 +3,9 @@
     <v-flex>
       <v-card>
         <v-card-title>
-          Role Management
+          Pengguna
           <v-spacer></v-spacer>
-          <v-btn color="primary">Tambah pengguna</v-btn>
+          <v-btn color="primary">Tambah</v-btn>
         </v-card-title>
         <v-card-text>
           <v-data-table></v-data-table>

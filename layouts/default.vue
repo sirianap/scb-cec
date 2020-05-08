@@ -19,7 +19,14 @@
         </v-list-item>
       </template>
       <v-list flat>
-        <v-list-item v-for="(item, i) in items" :key="i" :to="item.to" router exact color="green">
+        <v-list-item
+          v-for="(item, i) in items"
+          :key="i"
+          :to="item.to"
+          router
+          exact
+          color="green"
+        >
           <v-list-item-action>
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-action>
@@ -39,18 +46,37 @@
       />
       <!-- <v-toolbar-title v-text="title" /> -->
       <v-spacer />
-      <v-btn icon>
-        <v-icon>mdi-face</v-icon>
-      </v-btn>
+      <v-menu transition="slide-y-transition" offset-x offset-y bottom>
+        <template v-slot:activator="{ on }">
+          <v-btn icon v-on="on"><v-icon>mdi-account</v-icon></v-btn>
+        </template>
+        <v-card>
+          <v-card-text
+            ><v-list-item>
+              <v-list-item-avatar>
+                <v-avatar color="grey"></v-avatar>
+              </v-list-item-avatar>
+              <v-list-item-content>
+                <v-list-item-title>Rian Ardiana Prapanca</v-list-item-title>
+                <v-list-item-subtitle>G64170085</v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn text color="primary" @click.stop="logout">logout</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-menu>
     </v-app-bar>
     <v-content>
       <v-container>
         <nuxt />
       </v-container>
     </v-content>
-    <v-footer fixed app>
+    <!-- <v-footer fixed app>
       <span>Web sedang dalam pengembangan</span>
-    </v-footer>
+    </v-footer>-->
   </v-app>
 </template>
 
@@ -71,6 +97,11 @@ export default {
           to: '/siswa'
         },
         {
+          icon: 'mdi-cart',
+          title: 'Produk',
+          to: '/produk'
+        },
+        {
           icon: 'mdi-cash-100',
           title: 'Pembayaran',
           to: '/pembayaran'
@@ -82,6 +113,16 @@ export default {
         }
       ],
       title: 'Sistem Pembayaran CEC'
+    }
+  },
+  methods: {
+    async logout() {
+      try {
+        res = await this.$auth.logout()
+        console.log(res)
+      } catch (e) {
+        console.error(e)
+      }
     }
   }
 }
