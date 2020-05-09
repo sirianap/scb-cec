@@ -22,15 +22,19 @@
             <div :key="prod.id">
               <v-list-item @click.stop="editProduk(prod)">
                 <v-list-item-avatar>
-                  <div class="headline">{{prod.jumlah}}</div>
+                  <div class="headline">{{ prod.jumlah }}</div>
                 </v-list-item-avatar>
                 <v-list-item-content>
-                  <v-list-item-title>{{prod.nama}}</v-list-item-title>
-                  <v-list-item-subtitle>{{prod.nomor}}</v-list-item-subtitle>
+                  <v-list-item-title>{{ prod.nama }}</v-list-item-title>
+                  <v-list-item-subtitle>{{ prod.nomor }}</v-list-item-subtitle>
                 </v-list-item-content>
                 <v-list-item-content class="text-right">
-                  <v-list-item-subtitle class="font-weight-bold">Beli : Rp. {{prod.harga_beli}}</v-list-item-subtitle>
-                  <v-list-item-subtitle class="font-weight-bold">Jual : Rp. {{prod.harga_jual}}</v-list-item-subtitle>
+                  <v-list-item-subtitle class="font-weight-bold"
+                    >Beli : Rp. {{ prod.harga_beli }}</v-list-item-subtitle
+                  >
+                  <v-list-item-subtitle class="font-weight-bold"
+                    >Jual : Rp. {{ prod.harga_jual }}</v-list-item-subtitle
+                  >
                 </v-list-item-content>
               </v-list-item>
               <v-divider></v-divider>
@@ -43,7 +47,7 @@
     <!-- SNACK BAR -->
     <!-- DIALOG SUKSES -->
     <v-snackbar v-model="sukses.status" color="primary">
-      {{sukses.msg}}
+      {{ sukses.msg }}
       <v-btn dark icon small @click="sukses.status = false" fab>
         <v-icon>mdi-close</v-icon>
       </v-btn>
@@ -64,7 +68,7 @@
         <v-card-title>
           Tambah produk
           <v-spacer></v-spacer>
-          <v-btn icon @click.stop="dialog_tambah_produk=false">
+          <v-btn icon @click.stop="dialog_tambah_produk = false">
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-card-title>
@@ -72,7 +76,11 @@
           <v-form ref="form_tambah_produk">
             <v-row>
               <v-col cols="12">
-                <v-text-field v-model="tambah_produk.nama" label="Nama produk" hide-details></v-text-field>
+                <v-text-field
+                  v-model="tambah_produk.nama"
+                  label="Nama produk"
+                  hide-details
+                ></v-text-field>
               </v-col>
               <v-col cols="12">
                 <v-text-field
@@ -121,7 +129,7 @@
         <v-card-title>
           Edit produk
           <v-spacer></v-spacer>
-          <v-btn icon @click.stop="dialog_edit_produk=false">
+          <v-btn icon @click.stop="dialog_edit_produk = false">
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-card-title>
@@ -129,7 +137,11 @@
           <v-form ref="form_edit_produk">
             <v-row>
               <v-col cols="12">
-                <v-text-field v-model="edit_produk.nama" label="Nama produk" hide-details></v-text-field>
+                <v-text-field
+                  v-model="edit_produk.nama"
+                  label="Nama produk"
+                  hide-details
+                ></v-text-field>
               </v-col>
               <v-col cols="12">
                 <v-text-field
@@ -156,7 +168,12 @@
                 ></v-text-field>
               </v-col>
               <v-col cols="12">
-                <v-text-field v-model="edit_produk.jumlah" label="Stok" type="number" hide-details></v-text-field>
+                <v-text-field
+                  v-model="edit_produk.jumlah"
+                  label="Stok"
+                  type="number"
+                  hide-details
+                ></v-text-field>
               </v-col>
             </v-row>
           </v-form>
@@ -169,7 +186,12 @@
 
     <!-- FAB -->
     <div class="add-btn">
-      <v-btn fab color="primary" class="ma-4" @click.stop="dialog_tambah_produk = true">
+      <v-btn
+        fab
+        color="primary"
+        class="ma-4"
+        @click.stop="dialog_tambah_produk = true"
+      >
         <v-icon>mdi-plus</v-icon>
       </v-btn>
     </div>
@@ -290,12 +312,14 @@ export default {
   right: 0;
 }
 .bg-product {
-  background: url('~assets/img/bg-product.svg') no-repeat;
+  background: linear-gradient(
+      rgba(255, 255, 255, 0.9),
+      rgba(255, 255, 255, 0.8)
+    ),
+    url('~assets/img/bg-product.svg') no-repeat;
   background-position: center center;
   background-size: contain;
+  min-height: 85vh;
   background-attachment: fixed;
 }
-.transparent {
-  background: rgba(255, 255, 255, 0.8) !important;
-}
-</style>>
+</style>
