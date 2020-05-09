@@ -1,7 +1,11 @@
 import colors from 'vuetify/es5/util/colors'
+require('dotenv').config()
 
 export default {
   mode: 'spa',
+  env: {
+    api_url: process.env.API_URL || 'http://localhost:8000/api'
+  },
   /*
    ** Headers of the page
    */
@@ -34,7 +38,7 @@ export default {
   /*
    ** Nuxt.js dev-modules
    */
-  buildModules: ['@nuxtjs/vuetify'],
+  buildModules: ['@nuxtjs/vuetify', '@nuxtjs/dotenv'],
   /*
    ** Nuxt.js modules
    */
@@ -75,7 +79,7 @@ export default {
    ** See https://axios.nuxtjs.org/options
    */
   axios: {
-    baseURL: 'http://localhost:8000/api'
+    baseURL: process.env.api_url
   },
   /*
    ** vuetify module configuration
