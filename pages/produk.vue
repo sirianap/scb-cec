@@ -1,7 +1,7 @@
 <template>
-  <div style="height:80vh;" class="bg-product">
+  <div class="bg-product">
     <!-- Main Content -->
-    <v-layout row>
+    <v-layout column>
       <!-- Search Box -->
       <v-flex md12 xs12 lg12 sm12>
         <v-text-field
@@ -10,32 +10,45 @@
           label="Cari produk"
           hide-details
           v-model="search"
-          class="mx-2"
         ></v-text-field>
       </v-flex>
 
       <!-- List Produk -->
       <v-flex>
         <v-list class="transparent">
+          <template v-if="produk.length == 0">
+            <v-row justify="center">
+              <v-avatar size="100px">
+                <v-icon size="50px" color="primary" class="mdi-spin">mdi-loading</v-icon>
+              </v-avatar>
+            </v-row>
+          </template>
           <!-- <pre>{{produk}}</pre> -->
           <template v-for="prod in filteredProduk">
             <div :key="prod.id">
               <v-list-item @click.stop="editProduk(prod)">
                 <v-list-item-avatar>
-                  <div class="headline">{{ prod.jumlah }}</div>
+                  <div class="headline primary--text">{{ prod.jumlah }}</div>
                 </v-list-item-avatar>
                 <v-list-item-content>
-                  <v-list-item-title>{{ prod.nama }}</v-list-item-title>
+                  <v-list-item-title class="font-weight-bold">{{ prod.nama }}</v-list-item-title>
                   <v-list-item-subtitle>{{ prod.nomor }}</v-list-item-subtitle>
+                  <v-list-item-subtitle>
+                    Beli : Rp. {{ prod.harga_beli }}
+                    <span
+                      class="float-right"
+                    >Jual : Rp. {{ prod.harga_jual }}</span>
+                  </v-list-item-subtitle>
                 </v-list-item-content>
-                <v-list-item-content class="text-right">
-                  <v-list-item-subtitle class="font-weight-bold"
-                    >Beli : Rp. {{ prod.harga_beli }}</v-list-item-subtitle
-                  >
-                  <v-list-item-subtitle class="font-weight-bold"
-                    >Jual : Rp. {{ prod.harga_jual }}</v-list-item-subtitle
-                  >
-                </v-list-item-content>
+                <v-list-item-action>
+                  <v-btn icon color="primary">
+                    <v-icon>mdi-qrcode-edit</v-icon>
+                  </v-btn>
+                </v-list-item-action>
+                <!-- <v-list-item-content class="text-right">
+                  <v-list-item-subtitle class="font-weight-medium">Beli : Rp. {{ prod.harga_beli }}</v-list-item-subtitle>
+                  <v-list-item-subtitle class="font-weight-medium">Jual : Rp. {{ prod.harga_jual }}</v-list-item-subtitle>
+                </v-list-item-content>-->
               </v-list-item>
               <v-divider></v-divider>
             </div>
@@ -76,11 +89,7 @@
           <v-form ref="form_tambah_produk">
             <v-row>
               <v-col cols="12">
-                <v-text-field
-                  v-model="tambah_produk.nama"
-                  label="Nama produk"
-                  hide-details
-                ></v-text-field>
+                <v-text-field v-model="tambah_produk.nama" label="Nama produk" hide-details></v-text-field>
               </v-col>
               <v-col cols="12">
                 <v-text-field
@@ -137,11 +146,7 @@
           <v-form ref="form_edit_produk">
             <v-row>
               <v-col cols="12">
-                <v-text-field
-                  v-model="edit_produk.nama"
-                  label="Nama produk"
-                  hide-details
-                ></v-text-field>
+                <v-text-field v-model="edit_produk.nama" label="Nama produk" hide-details></v-text-field>
               </v-col>
               <v-col cols="12">
                 <v-text-field
@@ -168,12 +173,7 @@
                 ></v-text-field>
               </v-col>
               <v-col cols="12">
-                <v-text-field
-                  v-model="edit_produk.jumlah"
-                  label="Stok"
-                  type="number"
-                  hide-details
-                ></v-text-field>
+                <v-text-field v-model="edit_produk.jumlah" label="Stok" type="number" hide-details></v-text-field>
               </v-col>
             </v-row>
           </v-form>
@@ -186,12 +186,7 @@
 
     <!-- FAB -->
     <div class="add-btn">
-      <v-btn
-        fab
-        color="primary"
-        class="ma-4"
-        @click.stop="dialog_tambah_produk = true"
-      >
+      <v-btn fab color="primary" class="ma-4" @click.stop="dialog_tambah_produk = true">
         <v-icon>mdi-plus</v-icon>
       </v-btn>
     </div>
@@ -205,15 +200,7 @@ export default {
       dialog_tambah_produk: false,
       dialog_edit_produk: false,
       search: '',
-      produk: [
-        {
-          nama: '',
-          nomor: '',
-          harga_jual: null,
-          harga_beli: null,
-          jumlah: null
-        }
-      ],
+      produk: [],
       tambah_produk: {
         nama: null,
         nomor: null,
@@ -317,7 +304,7 @@ export default {
       rgba(255, 255, 255, 0.8)
     ),
     url('~assets/img/bg-product.svg') no-repeat;
-  background-position: center center;
+  background-position: center right;
   background-size: contain;
   min-height: 85vh;
   background-attachment: fixed;

@@ -39,14 +39,7 @@
                 ></v-text-field>
               </v-col>
               <v-col cols="12" class="pt-5">
-                <v-btn
-                  block
-                  color="green"
-                  dark
-                  height="40px"
-                  @click.stop="userLogin"
-                  >Masuk</v-btn
-                >
+                <v-btn block color="green" dark height="40px" @click.stop="userLogin">Masuk</v-btn>
               </v-col>
             </v-row>
           </v-form>
@@ -68,6 +61,9 @@
 
 <script>
 export default {
+  head: {
+    title: 'Login'
+  },
   layout: 'blank',
   auth: 'guest',
   data() {

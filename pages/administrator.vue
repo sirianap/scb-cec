@@ -7,9 +7,8 @@
           <v-spacer></v-spacer>
           <v-btn color="primary">Tambah</v-btn>
         </v-card-title>
-        <v-card-text>
-          <v-data-table></v-data-table>
-        </v-card-text>
+
+        <v-data-table></v-data-table>
       </v-card>
     </v-flex>
   </v-layout>

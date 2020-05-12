@@ -19,14 +19,7 @@
         </v-list-item>
       </template>
       <v-list flat>
-        <v-list-item
-          v-for="(item, i) in items"
-          :key="i"
-          :to="item.to"
-          router
-          exact
-          color="green"
-        >
+        <v-list-item v-for="(item, i) in items" :key="i" :to="item.to" router exact color="green">
           <v-list-item-action>
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-action>
@@ -48,17 +41,23 @@
       <v-spacer />
       <v-menu transition="slide-y-transition" offset-x offset-y bottom>
         <template v-slot:activator="{ on }">
-          <v-btn icon v-on="on"><v-icon>mdi-account</v-icon></v-btn>
+          <v-btn icon v-on="on">
+            <v-icon>mdi-account</v-icon>
+          </v-btn>
         </template>
         <v-card>
-          <v-card-text
-            ><v-list-item>
+          <v-card-text>
+            <v-list-item>
               <v-list-item-avatar>
-                <v-avatar color="grey"></v-avatar>
+                <img
+                  src="https://www.cendekiabaznas.sch.id/wp-content/uploads/2017/12/cropped-Logo-SCB-300x300.png"
+                  width="100%"
+                />
               </v-list-item-avatar>
               <v-list-item-content>
-                <v-list-item-title>Rian Ardiana Prapanca</v-list-item-title>
-                <v-list-item-subtitle>G64170085</v-list-item-subtitle>
+                <!-- <pre>{{$auth.user}}</pre> -->
+                <v-list-item-title>{{$auth.user.name}}</v-list-item-title>
+                <v-list-item-subtitle>{{$auth.user.email}}</v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
           </v-card-text>

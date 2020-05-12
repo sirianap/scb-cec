@@ -1,10 +1,10 @@
 <template>
   <div class="bg-siswa">
     <!-- MAIN CONTENT -->
-    <v-layout column="">
-      <v-flex>
+    <v-layout column>
+      <v-flex md12 xs12 lg12 sm12>
         <v-text-field
-          outlined
+          solo
           label="Cari siswa"
           hide-details
           v-model="search"
@@ -14,7 +14,14 @@
       </v-flex>
       <v-flex>
         <v-list class="transparent">
-          <template v-for="siswa in filteredSiswa">
+          <template v-if="daftar_siswa.length == 0">
+            <v-row justify="center">
+              <v-avatar size="100px">
+                <v-icon size="50px" color="primary" class="mdi-spin">mdi-loading</v-icon>
+              </v-avatar>
+            </v-row>
+          </template>
+          <template v-else v-for="siswa in filteredSiswa">
             <div :key="siswa.id">
               <v-list-item
                 @click.stop="
@@ -29,11 +36,14 @@
                   />
                 </v-list-item-avatar>
                 <v-list-item-content>
-                  <v-list-item-title>
-                    {{ siswa.nama }}
-                  </v-list-item-title>
+                  <v-list-item-title>{{ siswa.nama }}</v-list-item-title>
                   <v-list-item-subtitle>{{ siswa.nis }}</v-list-item-subtitle>
                 </v-list-item-content>
+                <v-list-item-action>
+                  <v-btn icon color="primary">
+                    <v-icon>mdi-eye</v-icon>
+                  </v-btn>
+                </v-list-item-action>
               </v-list-item>
               <v-divider></v-divider>
             </div>
@@ -71,18 +81,46 @@
             </v-data-table>
           </v-card-text>
         </v-card>
-      </v-flex> -->
+      </v-flex>-->
     </v-layout>
     <div class="add-btn">
-      <v-btn
-        fab
-        color="primary"
-        class="ma-4"
-        @click.stop="dialog_tambah_siswa = true"
-      >
+      <v-btn fab color="primary" class="ma-4" @click.stop="dialog_tambah_siswa = true">
         <v-icon>mdi-plus</v-icon>
       </v-btn>
     </div>
+
+    <!-- DIALOG EDIT SISWA -->
+    <v-dialog v-model="dialog_edit" persistent width="600px">
+      <v-card>
+        <v-card-title>
+          Edit siswa
+          <v-spacer></v-spacer>
+          <v-btn icon @click.stop="dialog_edit = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+        </v-card-title>
+        <v-card-text>
+          <v-form ref="form_edit_siswa">
+            <v-row>
+              <v-col cols="12">
+                <v-text-field hide-details label="Nama siswa" v-model="edit_siswa.nama"></v-text-field>
+              </v-col>
+              <v-col cols="12">
+                <v-text-field
+                  hide-details
+                  label="Nomor Induk Siswa"
+                  v-model="edit_siswa.nis"
+                  type="number"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+          </v-form>
+        </v-card-text>
+        <v-card-actions>
+          <v-btn block color="primary" @click.stop="updateSiswa">Simpan</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
 
     <!-- DIALOG TOP UP -->
     <v-dialog v-model="dialog_topup" persistent width="600px">
@@ -90,13 +128,7 @@
         <v-card-title>
           Top Up
           <v-spacer></v-spacer>
-          <v-btn
-            fab
-            icon
-            class="pa-0 ma-0"
-            small
-            @click.stop="dialog_topup = false"
-          >
+          <v-btn fab icon class="pa-0 ma-0" small @click.stop="dialog_topup = false">
             <v-icon color="red">mdi-close</v-icon>
           </v-btn>
         </v-card-title>
@@ -112,25 +144,15 @@
               <v-list-item>
                 <v-list-item-content>
                   <v-list-item-title>Saldo DigitCard</v-list-item-title>
-                  <v-list-item-title>Saldo Total</v-list-item-title>
+                  <v-list-item-title>Simpanan</v-list-item-title>
                 </v-list-item-content>
                 <v-list-item-content class="text-right">
-                  <v-list-item-title
-                    >Rp. {{ detail.saldo_digitcard }}</v-list-item-title
-                  >
-                  <v-list-item-title
-                    >Rp. {{ detail.saldo_total }}</v-list-item-title
-                  >
+                  <v-list-item-title>Rp. {{ detail.saldo_digitcard }}</v-list-item-title>
+                  <v-list-item-title>Rp. {{ detail.saldo_total }}</v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
             </v-col>
-            <v-col
-              cols="12"
-              md="6"
-              order="first"
-              order-md="last"
-              class="text-center"
-            >
+            <v-col cols="12" md="6" order="first" order-md="last" class="text-center">
               <img
                 src="https://www.cendekiabaznas.sch.id/wp-content/uploads/2017/12/cropped-Logo-SCB-300x300.png"
                 width="40%"
@@ -142,15 +164,11 @@
               <!-- {{input.topup}} -->
               <v-tabs fixed-tabs v-model="input.topup.saldo_type">
                 <v-tab href="#card">DigitCard</v-tab>
-                <v-tab href="#total">Total</v-tab>
+                <v-tab href="#total">Simpanan</v-tab>
               </v-tabs>
             </v-col>
             <v-col cols="12" class="py-0">
-              <v-text-field
-                label="Nominal"
-                type="number"
-                v-model="input.topup.nominal"
-              ></v-text-field>
+              <v-text-field label="Nominal" type="number" v-model="input.topup.nominal"></v-text-field>
             </v-col>
           </v-row>
         </v-card-text>
@@ -163,26 +181,24 @@
     <!-- DIALOG TAMBAH SISWA -->
     <v-dialog v-model="dialog_tambah_siswa" persistent width="600px">
       <v-card>
-        <v-card-title
-          >Tambah siswa
+        <v-card-title>
+          Tambah siswa
           <v-spacer></v-spacer>
           <v-btn
-            icon=""
+            icon
             @click.stop="
               dialog_tambah_siswa = false
               $refs.form_tambah_siswa.reset()
             "
-            ><v-icon>mdi-close</v-icon></v-btn
           >
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
         </v-card-title>
         <v-card-text>
           <v-form ref="form_tambah_siswa">
             <v-row>
               <v-col cols="12" class="py-0">
-                <v-text-field
-                  label="Nama"
-                  v-model="input.siswa.nama"
-                ></v-text-field>
+                <v-text-field label="Nama" v-model="input.siswa.nama"></v-text-field>
               </v-col>
               <v-col cols="12" class="py-0">
                 <v-text-field
@@ -196,9 +212,7 @@
           </v-form>
         </v-card-text>
         <v-card-actions>
-          <v-btn block="" color="primary" @click.stop="tambahSiswa"
-            >Simpan</v-btn
-          >
+          <v-btn block color="primary" @click.stop="tambahSiswa">Simpan</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -234,9 +248,9 @@
             <v-list-item-subtitle>{{ detail.nis }}</v-list-item-subtitle>
           </v-list-item-content>
           <v-list-item-action>
-            <v-btn icon color="primary"
-              ><v-icon>mdi-account-edit</v-icon></v-btn
-            >
+            <v-btn icon color="primary" @click.stop="editSiswa()">
+              <v-icon>mdi-account-edit</v-icon>
+            </v-btn>
           </v-list-item-action>
         </v-list-item>
         <v-divider></v-divider>
@@ -245,19 +259,15 @@
         <v-divider></v-divider>
         <v-list-item one-line>
           <v-list-item-content>
-            <v-btn color="red" text small @click="drawer = !drawer"
-              >Tutup</v-btn
-            >
+            <v-btn color="red" text small @click="drawer = !drawer">Tutup</v-btn>
           </v-list-item-content>
         </v-list-item>
       </template>
       <v-list nav class="py-0">
         <v-list-item dense>
           <v-list-item-content>
-            <v-list-item-title>Saldo total</v-list-item-title>
-            <v-list-item-subtitle>
-              {{ detail.saldo_total }}
-            </v-list-item-subtitle>
+            <v-list-item-title>Simpanan</v-list-item-title>
+            <v-list-item-subtitle>Rp. {{ detail.saldo_total }}</v-list-item-subtitle>
           </v-list-item-content>
           <v-list-item-action>
             <v-btn
@@ -268,16 +278,13 @@
                 dialog_topup = true
                 input.topup.saldo_type = 'total'
               "
-              >Top up</v-btn
-            >
+            >Top up</v-btn>
           </v-list-item-action>
         </v-list-item>
         <v-list-item dense>
           <v-list-item-content>
             <v-list-item-title>Saldo DigitCard</v-list-item-title>
-            <v-list-item-subtitle>
-              {{ detail.saldo_digitcard }}
-            </v-list-item-subtitle>
+            <v-list-item-subtitle>Rp. {{ detail.saldo_digitcard }}</v-list-item-subtitle>
           </v-list-item-content>
           <v-list-item-action>
             <v-btn
@@ -288,40 +295,30 @@
                 dialog_topup = true
                 input.topup.saldo_type = 'card'
               "
-              >Top up</v-btn
-            >
+            >Top up</v-btn>
           </v-list-item-action>
         </v-list-item>
         <v-divider></v-divider>
+        <template v-for="trans in detail.transaksi">
+          <v-list-item two-line class="py-0" dense :key="trans.id" @click.stop="{}">
+            <v-list-item-action class="mr-4">
+              <v-icon color="green" v-if="trans.mutasi_type == 'in'">mdi-arrow-left</v-icon>
+              <v-icon color="red" v-else>mdi-arrow-right</v-icon>
+            </v-list-item-action>
 
-        <v-list-item
-          two-line
-          class="py-0"
-          dense
-          v-for="trans in detail.transaksi"
-          :key="trans.id"
-        >
-          <v-list-item-icon>
-            <v-icon color="green" v-if="trans.mutasi_type == 'in'"
-              >mdi-arrow-left</v-icon
-            >
-            <v-icon color="red" v-else>mdi-arrow-right</v-icon>
-          </v-list-item-icon>
-
-          <v-list-item-content>
-            <v-list-item-title>Rp {{ trans.nominal }}</v-list-item-title>
-            <v-list-item-subtitle>
-              {{ $moment(trans.created_at).format('MM-DD-YYYY LT') }}
-            </v-list-item-subtitle>
-            <v-list-item-subtitle>
-              <span v-if="trans.saldo_type == 'card'">DigitCard</span>
-              <span v-else>Total</span>
-            </v-list-item-subtitle>
-          </v-list-item-content>
-          <!-- <v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>Rp {{ trans.nominal }}</v-list-item-title>
+              <v-list-item-subtitle>{{ $moment(trans.created_at).format('MM-DD-YYYY LT') }}</v-list-item-subtitle>
+              <v-list-item-subtitle>
+                <span v-if="trans.saldo_type == 'card'">DigitCard</span>
+                <span v-else>Simpanan</span>
+              </v-list-item-subtitle>
+            </v-list-item-content>
+            <!-- <v-list-item-action>
             <v-list-item-title>Admin</v-list-item-title>
-          </v-list-item-action>-->
-        </v-list-item>
+            </v-list-item-action>-->
+          </v-list-item>
+        </template>
       </v-list>
     </v-navigation-drawer>
   </div>
@@ -337,17 +334,10 @@ export default {
         { text: 'Saldo Bulanan', value: 'saldo_total' },
         { text: '', value: 'id' }
       ],
-      daftar_siswa: [
-        {
-          nama: 'Rian Ardiana Prapanca',
-          nis: 'G64170085',
-          saldo_digitcard: '20000',
-          saldo_total: '150000',
-          id: 1
-        }
-      ],
+      daftar_siswa: [],
       dialog_tambah_siswa: false,
       dialog_topup: false,
+      dialog_edit: false,
       search: '',
       drawer: false,
       input: {
@@ -375,6 +365,11 @@ export default {
       error: {
         status: false,
         msg: ''
+      },
+      edit_siswa: {
+        id: null,
+        nama: '',
+        nis: ''
       }
     }
   },
@@ -429,6 +424,29 @@ export default {
         this.error.status = true
         this.error.msg = e
       }
+    },
+    editSiswa() {
+      this.dialog_edit = true
+      Object.assign(this.edit_siswa, this.detail)
+    },
+    async updateSiswa() {
+      try {
+        const res = await this.$axios({
+          method: 'put',
+          url: 'siswa/' + this.edit_siswa.id,
+          data: this.edit_siswa
+        })
+        console.log(res)
+        this.sukses.status = true
+        this.sukses.msg = 'Perubahan berhasil disimpan'
+        this.dialog_edit = false
+        this.getSiswa()
+        this.$refs.form_edit_siswa.reset()
+      } catch (e) {
+        console.error(e)
+        this.error.status = true
+        this.error.msg = 'Hmmm ada yang salah deh'
+      }
     }
   },
   computed: {
@@ -453,7 +471,7 @@ export default {
       rgba(255, 255, 255, 0.8)
     ),
     url('~assets/img/bg-siswa.svg') no-repeat;
-  background-position: center center;
+  background-position: center right;
   background-attachment: fixed;
   background-size: contain;
   min-height: 85vh;
