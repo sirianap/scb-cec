@@ -29,7 +29,7 @@
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
-    <v-app-bar clipped-left clipped-right fixed app color="green" dark>
+    <v-app-bar clipped-left clipped-right elevate-on-scroll app color="green" dark>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-spacer />
       <img
