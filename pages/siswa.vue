@@ -17,9 +17,7 @@
           <template v-if="daftar_siswa.length == 0">
             <v-row justify="center">
               <v-avatar size="100px">
-                <v-icon size="50px" color="primary" class="mdi-spin"
-                  >mdi-loading</v-icon
-                >
+                <v-icon size="50px" color="primary" class="mdi-spin">mdi-loading</v-icon>
               </v-avatar>
             </v-row>
           </template>
@@ -32,10 +30,7 @@
                 "
               >
                 <v-list-item-avatar>
-                  <img
-                    src="https://www.cendekiabaznas.sch.id/wp-content/uploads/2017/12/cropped-Logo-SCB-300x300.png"
-                    width="100%"
-                  />
+                  <img src="~assets/img/Logo.png" width="100%" />
                 </v-list-item-avatar>
                 <v-list-item-content>
                   <v-list-item-title>{{ siswa.nama }}</v-list-item-title>
@@ -85,13 +80,8 @@
         </v-card>
       </v-flex>-->
     </v-layout>
-    <div class="add-btn">
-      <v-btn
-        fab
-        color="primary"
-        class="ma-4"
-        @click.stop="dialog_tambah_siswa = true"
-      >
+    <div class="add-btn" v-if="$auth.user.role == 'pembina' || $auth.user.role == 'sysadmin'">
+      <v-btn fab color="primary" class="ma-4" @click.stop="dialog_tambah_siswa = true">
         <v-icon>mdi-plus</v-icon>
       </v-btn>
     </div>
@@ -110,11 +100,7 @@
           <v-form ref="form_edit_siswa">
             <v-row>
               <v-col cols="12">
-                <v-text-field
-                  hide-details
-                  label="Nama siswa"
-                  v-model="edit_siswa.nama"
-                ></v-text-field>
+                <v-text-field hide-details label="Nama siswa" v-model="edit_siswa.nama"></v-text-field>
               </v-col>
               <v-col cols="12">
                 <v-text-field
@@ -139,13 +125,7 @@
         <v-card-title>
           Top Up
           <v-spacer></v-spacer>
-          <v-btn
-            fab
-            icon
-            class="pa-0 ma-0"
-            small
-            @click.stop="dialog_topup = false"
-          >
+          <v-btn fab icon class="pa-0 ma-0" small @click.stop="dialog_topup = false">
             <v-icon color="red">mdi-close</v-icon>
           </v-btn>
         </v-card-title>
@@ -164,26 +144,13 @@
                   <v-list-item-title>Simpanan</v-list-item-title>
                 </v-list-item-content>
                 <v-list-item-content class="text-right">
-                  <v-list-item-title
-                    >Rp. {{ detail.saldo_digitcard }}</v-list-item-title
-                  >
-                  <v-list-item-title
-                    >Rp. {{ detail.saldo_total }}</v-list-item-title
-                  >
+                  <v-list-item-title>Rp. {{ detail.saldo_digitcard }}</v-list-item-title>
+                  <v-list-item-title>Rp. {{ detail.saldo_total }}</v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
             </v-col>
-            <v-col
-              cols="12"
-              md="6"
-              order="first"
-              order-md="last"
-              class="text-center"
-            >
-              <img
-                src="https://www.cendekiabaznas.sch.id/wp-content/uploads/2017/12/cropped-Logo-SCB-300x300.png"
-                width="40%"
-              />
+            <v-col cols="12" md="6" order="first" order-md="last" class="text-center">
+              <img src="~assets/img/Logo.png" width="40%" />
             </v-col>
           </v-row>
           <v-row>
@@ -195,15 +162,11 @@
               </v-tabs>
             </v-col>
             <v-col cols="12" class="py-0">
-              <v-text-field
-                label="Nominal"
-                type="number"
-                v-model="input.topup.nominal"
-              ></v-text-field>
+              <v-text-field label="Nominal" type="number" v-model="input.topup.nominal"></v-text-field>
             </v-col>
           </v-row>
         </v-card-text>
-        <v-card-actions>
+        <v-card-actions v-if="$auth.user.role == ('pembina' || 'sysadmin')">
           <v-btn block color="primary" @click.stop="topUpSiswa">Top Up</v-btn>
         </v-card-actions>
       </v-card>
@@ -229,10 +192,7 @@
           <v-form ref="form_tambah_siswa">
             <v-row>
               <v-col cols="12" class="py-0">
-                <v-text-field
-                  label="Nama"
-                  v-model="input.siswa.nama"
-                ></v-text-field>
+                <v-text-field label="Nama" v-model="input.siswa.nama"></v-text-field>
               </v-col>
               <v-col cols="12" class="py-0">
                 <v-text-field
@@ -279,38 +239,42 @@
         <v-card-text>
           <div>
             {{
-              $moment(this.transaksi.created_at).format('hh:mm a, Do MMMM Y')
+            $moment(this.transaksi.created_at).format('hh:mm a, Do MMMM Y')
             }}
           </div>
           <div>
             <span class="primary--text">Nomor transaksi</span>
-            <span class="font-weight-medium float-right">{{
+            <span class="font-weight-medium float-right">
+              {{
               this.transaksi.id
-            }}</span>
+              }}
+            </span>
           </div>
           <div>
             <span class="primary--text">Pembeli</span>
-            <span class="font-weight-medium float-right">{{
+            <span class="font-weight-medium float-right">
+              {{
               this.transaksi.siswa.nama
-            }}</span>
+              }}
+            </span>
           </div>
           <div>
             <span class="primary--text">Kasir</span>
-            <span class="font-weight-medium float-right">{{
+            <span class="font-weight-medium float-right">
+              {{
               this.transaksi.created_by.name
-            }}</span>
+              }}
+            </span>
           </div>
           <div>
             <span class="primary--text">Nominal</span>
-            <span class="font-weight-medium float-right"
-              >Rp {{ this.transaksi.nominal }}</span
-            >
+            <span class="font-weight-medium float-right">Rp {{ this.transaksi.nominal }}</span>
           </div>
           <!-- <div>
             <v-btn small text color="info" block @click.stop="downloadWithCSS"
               >Simpan kedalam pdf</v-btn
             >
-          </div> -->
+          </div>-->
           <v-list dense class="transparent">
             <template v-for="item in transaksi.detail">
               <v-list-item class="px-0" :key="item.id">
@@ -319,14 +283,14 @@
                 </v-list-item-avatar>
                 <v-list-item-content>
                   <v-list-item-title>{{ item.produk.nama }}</v-list-item-title>
-                  <v-list-item-subtitle>{{
+                  <v-list-item-subtitle>
+                    {{
                     item.produk.nomor
-                  }}</v-list-item-subtitle>
+                    }}
+                  </v-list-item-subtitle>
                 </v-list-item-content>
                 <v-list-item-content class="text-right">
-                  <v-list-item-title
-                    >Rp {{ item.harga_total }}</v-list-item-title
-                  >
+                  <v-list-item-title>Rp {{ item.harga_total }}</v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
             </template>
@@ -340,9 +304,7 @@
       <template v-slot:prepend>
         <v-list-item two-line>
           <v-list-item-avatar>
-            <img
-              src="https://www.cendekiabaznas.sch.id/wp-content/uploads/2017/12/cropped-Logo-SCB-300x300.png"
-            />
+            <img src="~assets/img/Logo.png" />
           </v-list-item-avatar>
 
           <v-list-item-content>
@@ -350,7 +312,12 @@
             <v-list-item-subtitle>{{ detail.nis }}</v-list-item-subtitle>
           </v-list-item-content>
           <v-list-item-action>
-            <v-btn icon color="primary" @click.stop="editSiswa()">
+            <v-btn
+              icon
+              color="primary"
+              @click.stop="editSiswa()"
+              v-if="$auth.user.role == 'pembina' || $auth.user.role == 'sysadmin'"
+            >
               <v-icon>mdi-account-edit</v-icon>
             </v-btn>
           </v-list-item-action>
@@ -361,9 +328,7 @@
         <v-divider></v-divider>
         <v-list-item one-line>
           <v-list-item-content>
-            <v-btn color="red" text small @click="drawer = !drawer"
-              >Tutup</v-btn
-            >
+            <v-btn color="red" text small @click="drawer = !drawer">Tutup</v-btn>
           </v-list-item-content>
         </v-list-item>
       </template>
@@ -371,41 +336,37 @@
         <v-list-item dense>
           <v-list-item-content>
             <v-list-item-title>Simpanan</v-list-item-title>
-            <v-list-item-subtitle
-              >Rp. {{ detail.saldo_total }}</v-list-item-subtitle
-            >
+            <v-list-item-subtitle>Rp. {{ detail.saldo_total }}</v-list-item-subtitle>
           </v-list-item-content>
           <v-list-item-action>
             <v-btn
               color="primary"
               text
+              v-if="$auth.user.role == 'pembina' || $auth.user.role == 'sysadmin'"
               small
               @click.stop="
                 dialog_topup = true
                 input.topup.saldo_type = 'total'
               "
-              >Top up</v-btn
-            >
+            >Top up</v-btn>
           </v-list-item-action>
         </v-list-item>
         <v-list-item dense>
           <v-list-item-content>
             <v-list-item-title>Saldo DigitCard</v-list-item-title>
-            <v-list-item-subtitle
-              >Rp. {{ detail.saldo_digitcard }}</v-list-item-subtitle
-            >
+            <v-list-item-subtitle>Rp. {{ detail.saldo_digitcard }}</v-list-item-subtitle>
           </v-list-item-content>
           <v-list-item-action>
             <v-btn
               color="primary"
               text
+              v-if="$auth.user.role == 'pembina' || $auth.user.role == 'sysadmin'"
               small
               @click.stop="
                 dialog_topup = true
                 input.topup.saldo_type = 'card'
               "
-              >Top up</v-btn
-            >
+            >Top up</v-btn>
           </v-list-item-action>
         </v-list-item>
         <v-divider></v-divider>
@@ -418,17 +379,17 @@
             @click.stop="detailTransaksi(trans.id)"
           >
             <v-list-item-action class="mr-4">
-              <v-icon color="green" v-if="trans.mutasi_type == 'in'"
-                >mdi-arrow-left</v-icon
-              >
+              <v-icon color="green" v-if="trans.mutasi_type == 'in'">mdi-arrow-left</v-icon>
               <v-icon color="red" v-else>mdi-arrow-right</v-icon>
             </v-list-item-action>
 
             <v-list-item-content>
               <v-list-item-title>Rp {{ trans.nominal }}</v-list-item-title>
-              <v-list-item-subtitle>{{
+              <v-list-item-subtitle>
+                {{
                 $moment(trans.created_at).format('MM-DD-YYYY LT')
-              }}</v-list-item-subtitle>
+                }}
+              </v-list-item-subtitle>
               <v-list-item-subtitle>
                 <span v-if="trans.saldo_type == 'card'">DigitCard</span>
                 <span v-else>Simpanan</span>

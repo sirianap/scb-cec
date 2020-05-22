@@ -4,9 +4,7 @@
       <template v-slot:prepend>
         <v-list-item class="pt-2">
           <v-container text-center>
-            <v-img
-              src="https://www.cendekiabaznas.sch.id/wp-content/uploads/2017/12/Logo-SCB_Hitam.png"
-            ></v-img>
+            <img src="~assets/img/Logo-SCB-Hitam.png" height="55px" />
           </v-container>
         </v-list-item>
       </template>
@@ -32,11 +30,7 @@
     <v-app-bar clipped-left clipped-right elevate-on-scroll app color="green" dark>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-spacer />
-      <img
-        src="https://www.cendekiabaznas.sch.id/wp-content/uploads/2017/12/cropped-Logo-SCB-300x300.png"
-        height="40px"
-        width="40px"
-      />
+      <img src="~assets/img/Logo.png" height="40px" width="40px" />
       <!-- <v-toolbar-title v-text="title" /> -->
       <v-spacer />
       <v-menu transition="slide-y-transition" offset-x offset-y bottom>
@@ -49,15 +43,16 @@
           <v-card-text>
             <v-list-item>
               <v-list-item-avatar>
-                <img
-                  src="https://www.cendekiabaznas.sch.id/wp-content/uploads/2017/12/cropped-Logo-SCB-300x300.png"
-                  width="100%"
-                />
+                <img src="~assets/img/Logo.png" width="100%" />
               </v-list-item-avatar>
               <v-list-item-content>
                 <!-- <pre>{{$auth.user}}</pre> -->
-                <v-list-item-title>{{$auth.user.name}}</v-list-item-title>
-                <v-list-item-subtitle>{{$auth.user.email}}</v-list-item-subtitle>
+                <v-list-item-title>{{ $auth.user.name }}</v-list-item-title>
+                <v-list-item-subtitle>
+                  {{
+                  $auth.user.email
+                  }}
+                </v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
           </v-card-text>
@@ -84,33 +79,33 @@ export default {
   data() {
     return {
       drawer: true,
-      items: [
-        {
-          icon: 'mdi-view-dashboard',
-          title: 'Dashboard',
-          to: '/'
-        },
-        {
-          icon: 'mdi-account-group',
-          title: 'Siswa',
-          to: '/siswa'
-        },
-        {
-          icon: 'mdi-cart',
-          title: 'Produk',
-          to: '/produk'
-        },
-        {
-          icon: 'mdi-cash-100',
-          title: 'Pembayaran',
-          to: '/pembayaran'
-        },
-        {
-          icon: 'mdi-tools',
-          title: 'Admin',
-          to: '/administrator'
-        }
-      ],
+      // items: [
+      //   {
+      //     icon: 'mdi-view-dashboard',
+      //     title: 'Dashboard',
+      //     to: '/'
+      //   },
+      //   {
+      //     icon: 'mdi-account-group',
+      //     title: 'Siswa',
+      //     to: '/siswa'
+      //   },
+      //   {
+      //     icon: 'mdi-cart',
+      //     title: 'Produk',
+      //     to: '/produk'
+      //   },
+      //   {
+      //     icon: 'mdi-cash-100',
+      //     title: 'Pembayaran',
+      //     to: '/pembayaran'
+      //   },
+      //   {
+      //     icon: 'mdi-tools',
+      //     title: 'Admin',
+      //     to: '/administrator'
+      //   }
+      // ],
       title: 'Sistem Pembayaran CEC'
     }
   },
@@ -121,6 +116,108 @@ export default {
         console.log(res)
       } catch (e) {
         console.error(e)
+      }
+    }
+  },
+  computed: {
+    items() {
+      const role = this.$auth.user.role
+      if (role == 'sysadmin') {
+        return [
+          {
+            icon: 'mdi-view-dashboard',
+            title: 'Dashboard',
+            to: '/'
+          },
+          {
+            icon: 'mdi-view-dashboard',
+            title: 'Dashboard Pembina',
+            to: '/dashboard-pembina'
+          },
+          {
+            icon: 'mdi-account-group',
+            title: 'Siswa',
+            to: '/siswa'
+          },
+          {
+            icon: 'mdi-cart',
+            title: 'Produk',
+            to: '/produk'
+          },
+          {
+            icon: 'mdi-cash-100',
+            title: 'Pembayaran',
+            to: '/pembayaran'
+          },
+          {
+            icon: 'mdi-tools',
+            title: 'Admin',
+            to: '/administrator'
+          }
+        ]
+      }
+      if (role == 'admin') {
+        return [
+          {
+            icon: 'mdi-view-dashboard',
+            title: 'Dashboard',
+            to: '/'
+          },
+          {
+            icon: 'mdi-account-group',
+            title: 'Siswa',
+            to: '/siswa'
+          },
+          {
+            icon: 'mdi-cart',
+            title: 'Produk',
+            to: '/produk'
+          },
+          {
+            icon: 'mdi-cash-100',
+            title: 'Pembayaran',
+            to: '/pembayaran'
+          }
+        ]
+      }
+
+      if (role == 'kasir') {
+        return [
+          {
+            icon: 'mdi-view-dashboard',
+            title: 'Dashboard',
+            to: '/'
+          },
+          {
+            icon: 'mdi-account-group',
+            title: 'Siswa',
+            to: '/siswa'
+          },
+          {
+            icon: 'mdi-cart',
+            title: 'Produk',
+            to: '/produk'
+          },
+          {
+            icon: 'mdi-cash-100',
+            title: 'Pembayaran',
+            to: '/pembayaran'
+          }
+        ]
+      }
+      if (role == 'pembina') {
+        return [
+          {
+            icon: 'mdi-view-dashboard',
+            title: 'Dashboard Pembina',
+            to: '/dashboard-pembina'
+          },
+          {
+            icon: 'mdi-account-group',
+            title: 'Siswa',
+            to: '/siswa'
+          }
+        ]
       }
     }
   }

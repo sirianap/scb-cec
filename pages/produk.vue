@@ -275,8 +275,10 @@ export default {
       }
     },
     editProduk(obj) {
-      this.dialog_edit_produk = true
-      Object.assign(this.edit_produk, obj)
+      if (this.$auth.user.role != 'kasir') {
+        this.dialog_edit_produk = true
+        Object.assign(this.edit_produk, obj)
+      }
     }
   },
   computed: {

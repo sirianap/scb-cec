@@ -4,12 +4,7 @@
       <v-flex>
         <v-row>
           <v-col cols="12" md="3" class="pt-0">
-            <v-menu
-              v-model="menu1"
-              :close-on-content-click="false"
-              max-width="290"
-              offset-y
-            >
+            <v-menu v-model="menu1" :close-on-content-click="false" max-width="290" offset-y>
               <template v-slot:activator="{ on }">
                 <v-text-field
                   :value="dateRangeText"
@@ -22,6 +17,7 @@
                   @click:clear="
                     dates = []
                     getTransaksi()
+                    getTransaksi2()
                   "
                 ></v-text-field>
               </template>
@@ -30,6 +26,8 @@
                 @change="
                   menu1 = false
                   getTransaksi()
+                  getTransaksi2()
+                  
                 "
                 range
                 no-title
@@ -44,15 +42,13 @@
             <v-card>
               <v-list-item>
                 <v-list-item-content>
-                  <v-list-item-title class="primary--text"
-                    >Pembayaran masuk</v-list-item-title
-                  >
-                  <v-list-item-subtitle class="display-1"
-                    >Rp
+                  <v-list-item-title class="primary--text">Saldo total siswa</v-list-item-title>
+                  <v-list-item-subtitle class="display-1">
+                    Rp
                     {{
-                      pembayaranMasuk(daftar_transaksi)
-                    }}</v-list-item-subtitle
-                  >
+                    saldoTotal(daftar_siswa)
+                    }}
+                  </v-list-item-subtitle>
                 </v-list-item-content>
                 <v-list-item-icon>
                   <v-icon size="50px" color="primary">mdi-cash-multiple</v-icon>
@@ -64,34 +60,16 @@
             <v-card>
               <v-list-item>
                 <v-list-item-content>
-                  <v-list-item-title class="primary--text"
-                    >Keuntungan</v-list-item-title
-                  >
-                  <v-list-item-subtitle class="display-1"
-                    >Rp {{ keuntungan(daftar_transaksi) }}</v-list-item-subtitle
-                  >
-                </v-list-item-content>
-                <v-list-item-icon>
-                  <v-icon size="50px" color="primary"
-                    >mdi-flower-tulip-outline</v-icon
-                  >
-                </v-list-item-icon>
-              </v-list-item>
-            </v-card>
-          </v-col>
-          <v-col cols="12" md="4">
-            <v-card>
-              <v-list-item>
-                <v-list-item-content>
-                  <v-list-item-title class="primary--text"
-                    >Jumlah Transaksi</v-list-item-title
-                  >
+                  <v-list-item-title class="primary--text">Pembelian di CEC</v-list-item-title>
                   <v-list-item-subtitle class="display-1">
-                    {{ daftar_transaksi.length }}
+                    Rp
+                    {{
+                    pembayaranMasuk(daftar_transaksi)
+                    }}
                   </v-list-item-subtitle>
                 </v-list-item-content>
                 <v-list-item-icon>
-                  <v-icon size="50px" color="primary">mdi-transition</v-icon>
+                  <v-icon size="50px" color="primary">mdi-cash-multiple</v-icon>
                 </v-list-item-icon>
               </v-list-item>
             </v-card>
@@ -102,21 +80,57 @@
         <v-row>
           <v-col cols="12">
             <v-card>
-              <v-card-title>Riwayat pembayaran</v-card-title>
+              <v-card-title>Riwayat pembayaran CEC</v-card-title>
               <!-- <pre>{{daftar_transaksi}}</pre> -->
               <v-data-table :headers="header" :items="daftar_transaksi">
-                <template v-slot:item.created_at="{ item }">{{
+                <template v-slot:item.created_at="{ item }">
+                  {{
                   $moment(item.created_at).format('Do MMM YYYY, h:mm a')
-                }}</template>
+                  }}
+                </template>
                 <template v-slot:item.id="{ item }">
                   <v-btn
                     text
                     small
                     color="primary"
                     @click.stop="detailTransaksi(item.id)"
-                    >Lihat detail</v-btn
-                  >
+                  >Lihat detail</v-btn>
                 </template>
+              </v-data-table>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-flex>
+      <v-flex md12 xs12 lg12 sm12>
+        <v-row>
+          <v-col cols="12">
+            <v-card>
+              <v-card-title>Riwayat Top Up dan Penarikan</v-card-title>
+              <!-- <pre>{{daftar_transaksi}}</pre> -->
+              <v-data-table :headers="header_2" :items="daftar_transaksi_2">
+                <template v-slot:item.created_at="{ item }">
+                  {{
+                  $moment(item.created_at).format('Do MMM YYYY, h:mm a')
+                  }}
+                </template>
+                <template v-slot:item.saldo_type="{ item }">
+                  <v-chip
+                    class="text-uppercase"
+                    v-if="item.nominal>0"
+                    small
+                    dark
+                    color="green"
+                  >{{item.saldo_type}}</v-chip>
+                  <v-chip class="text-uppercase" small v-else color="red" dark>{{item.saldo_type}}</v-chip>
+                </template>
+                <!-- <template v-slot:item.id="{ item }">
+                  <v-btn
+                    text
+                    small
+                    color="primary"
+                    @click.stop="detailTransaksi(item.id)"
+                  >Lihat detail</v-btn>
+                </template>-->
               </v-data-table>
             </v-card>
           </v-col>
@@ -135,38 +149,42 @@
         <v-card-text>
           <div>
             {{
-              $moment(this.transaksi.created_at).format('hh:mm a, Do MMMM Y')
+            $moment(this.transaksi.created_at).format('hh:mm a, Do MMMM Y')
             }}
           </div>
           <div>
             <span class="primary--text">Nomor transaksi</span>
-            <span class="font-weight-medium float-right">{{
+            <span class="font-weight-medium float-right">
+              {{
               this.transaksi.id
-            }}</span>
+              }}
+            </span>
           </div>
           <div>
             <span class="primary--text">Pembeli</span>
-            <span class="font-weight-medium float-right">{{
+            <span class="font-weight-medium float-right">
+              {{
               this.transaksi.siswa.nama
-            }}</span>
+              }}
+            </span>
           </div>
           <div>
             <span class="primary--text">Kasir</span>
-            <span class="font-weight-medium float-right">{{
+            <span class="font-weight-medium float-right">
+              {{
               this.transaksi.created_by.name
-            }}</span>
+              }}
+            </span>
           </div>
           <div>
             <span class="primary--text">Nominal</span>
-            <span class="font-weight-medium float-right"
-              >Rp {{ this.transaksi.nominal }}</span
-            >
+            <span class="font-weight-medium float-right">Rp {{ this.transaksi.nominal }}</span>
           </div>
           <!-- <div>
             <v-btn small text color="info" block @click.stop="downloadWithCSS"
               >Simpan kedalam pdf</v-btn
             >
-          </div> -->
+          </div>-->
           <v-list dense class="transparent">
             <template v-for="item in transaksi.detail">
               <v-list-item class="px-0" :key="item.id">
@@ -175,14 +193,14 @@
                 </v-list-item-avatar>
                 <v-list-item-content>
                   <v-list-item-title>{{ item.produk.nama }}</v-list-item-title>
-                  <v-list-item-subtitle>{{
+                  <v-list-item-subtitle>
+                    {{
                     item.produk.nomor
-                  }}</v-list-item-subtitle>
+                    }}
+                  </v-list-item-subtitle>
                 </v-list-item-content>
                 <v-list-item-content class="text-right">
-                  <v-list-item-title
-                    >Rp {{ item.harga_total }}</v-list-item-title
-                  >
+                  <v-list-item-title>Rp {{ item.harga_total }}</v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
             </template>
@@ -209,6 +227,15 @@ export default {
         { text: 'PIC', value: 'created_by.name' },
         { text: '', value: 'id' }
       ],
+      daftar_transaksi_2: [],
+      header_2: [
+        { text: 'Waktu', value: 'created_at' },
+        { text: 'Siswa', value: 'siswa.nama' },
+        { text: 'Nominal', value: 'nominal' },
+        { text: 'Simpanan/DigitCard', value: 'saldo_type' },
+        { text: 'PIC', value: 'created_by.name' }
+        // { text: '', value: 'id' }
+      ],
       daftar_transaksi: [],
       transaksi: {
         siswa: {
@@ -218,11 +245,23 @@ export default {
           name: ''
         }
       },
+      daftar_siswa: [],
 
       dialog_transaksi: false
     }
   },
   methods: {
+    async getSiswa() {
+      try {
+        const siswa = await this.$axios.$get('siswa')
+        console.log(siswa)
+        this.daftar_siswa = siswa
+      } catch (e) {
+        console.log(e)
+        this.error.status = true
+        this.error.msg = e
+      }
+    },
     async getTransaksi() {
       try {
         const res = await this.$axios.get('/transaksi', {
@@ -237,6 +276,20 @@ export default {
         console.log(e)
       }
     },
+    async getTransaksi2() {
+      try {
+        const res = await this.$axios.get('/transaksi2', {
+          params: {
+            from: this.dates[0],
+            to: this.dates[1]
+          }
+        })
+        this.daftar_transaksi_2 = res.data
+        console.log(res)
+      } catch (e) {
+        console.log(e)
+      }
+    },
     async detailTransaksi(id) {
       try {
         const res = await this.$axios.get('/transaksi/' + id)
@@ -246,6 +299,13 @@ export default {
       } catch (e) {
         console.log(e)
       }
+    },
+    saldoTotal(detail) {
+      let sum = 0
+      detail.forEach(el => {
+        sum += el.saldo_digitcard + el.saldo_total
+      })
+      return sum
     },
     pembayaranMasuk(detail) {
       let sum = 0
@@ -289,7 +349,9 @@ export default {
     }
   },
   mounted() {
+    this.getSiswa()
     this.getTransaksi()
+    this.getTransaksi2()
   }
 }
 </script>

@@ -2,20 +2,16 @@
   <v-layout row justify-center align-center fill-height class="bg-pembayaran">
     <v-flex md12 xs12 sm12 lg12 style="height:60vh">
       <v-row align="center" class="pa-0 ma-0 fill-height">
-        <v-card-text class="pb-0">
-          <v-img
-            src="https://www.cendekiabaznas.sch.id/wp-content/uploads/2017/12/cropped-Logo-SCB-300x300.png"
-            height="130px"
-            contain
-          ></v-img>
-          <v-list-item class="text-center">
+        <v-card-text class="pb-0 text-center">
+          <img src="~assets/img/Logo.png" height="130px" contain />
+          <v-list-item>
             <v-list-item-content>
               <v-list-item-title>{{detail.nama}}</v-list-item-title>
               <v-list-item-subtitle>{{detail.nis}}</v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
           <v-list-item v-if="detail.saldo_total!=null">
-            <v-list-item-content>
+            <v-list-item-content class="text-left">
               <v-list-item-title>Saldo DigitCard</v-list-item-title>
               <v-list-item-title>Saldo Total</v-list-item-title>
             </v-list-item-content>
@@ -211,7 +207,7 @@ export default {
   mounted() {},
   watch: {
     nis: function(val) {
-      if (val.length >= 8) this.lihatDetail(val)
+      if (val.length >= 9) this.lihatDetail(val)
     }
   }
 }

@@ -1,10 +1,55 @@
-# scb-webclient
+# SMP Cendekia Baznas CEC WebClient
 
-> SMP Cendekia Baznas
+## Nama Sistem
+
+DigitCard
+
+## Deskripsi Singkat
+
+Dilingkungan SCB, pembayaran dilakukan secara non-tunai. Untuk melakukan transaksi setiap siswa diharuskan mempunyai voucher yang memiliki nilai tertentu. Voucher ini diatur oleh asrama sedemikian rupa sehingga masing masing siswa hanya menghabiskan nominal tertentu pada jangka waktu tertentu.
+
+Namun yang jadi masalah, semuanya masih dikontrol secara manual. Sering terjadi ketidaksesuaian antara nilai voucher dan saldo yang dimiliki siswa karena tidak adanya sistem terpadu untuk memonitor hal tersebut.
+
+Sistem DigitCard ini memungkinkan Asrama dan CEC memonitor siklus keuangan siswa dan transaksi yang dilakukan oleh siswa.
+
+## Ruang lingkup pengembangan
+
+### Software
+
+- Visual Studio Code
+- XAMPP
+- Chrome Dev Tool
+
+### Tech Stack
+
+- Nuxt.js (Vue.js Framework) FrontEnd
+- Laravel (PHP Framework) BackEnd
+- MySQL DBMS
+
+## Fitur Umum
+
+- Transaksi Siswa di CEC
+- Manajemen Keungan Siswa
+- Manajemen Produk CEC
+
+## Konsep OOP
+
+- Class
+- Object
+- Abstraction
+- Encapsulation
+- Inheritance
+
+## Developer and Job Description
+
+> Rian Ardiana Prapanca as a Fullstack Developer & System Analyst
+
+- Refianto DD
+- Yasmin R
 
 ## Build Setup
 
-``` bash
+```bash
 # install dependencies
 $ npm install
 
