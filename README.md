@@ -47,6 +47,10 @@ Sistem DigitCard ini memungkinkan Asrama dan CEC memonitor siklus keuangan siswa
 - Refianto DD
 - Yasmin R
 
+## Class Diagram
+
+![Class Diagram](./CD.png)
+
 ## Build Setup
 
 ```bash
