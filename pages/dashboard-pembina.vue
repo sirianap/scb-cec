@@ -310,14 +310,14 @@ export default {
     pembayaranMasuk(detail) {
       let sum = 0
       detail.forEach(el => {
-        sum += el.nominal
+        sum += Number(el.nominal)
       })
       return sum
     },
     keuntungan(detail) {
       let sum = 0
       detail.forEach(el => {
-        sum += el.keuntungan
+        sum += Number(el.keuntungan)
       })
       return sum
     },

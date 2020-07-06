@@ -4,12 +4,7 @@
       <v-flex>
         <v-row>
           <v-col cols="12" md="3" class="pt-0">
-            <v-menu
-              v-model="menu1"
-              :close-on-content-click="false"
-              max-width="290"
-              offset-y
-            >
+            <v-menu v-model="menu1" :close-on-content-click="false" max-width="290" offset-y>
               <template v-slot:activator="{ on }">
                 <v-text-field
                   :value="dateRangeText"
@@ -44,15 +39,13 @@
             <v-card>
               <v-list-item>
                 <v-list-item-content>
-                  <v-list-item-title class="primary--text"
-                    >Pembayaran masuk</v-list-item-title
-                  >
-                  <v-list-item-subtitle class="display-1"
-                    >Rp
+                  <v-list-item-title class="primary--text">Pembayaran masuk</v-list-item-title>
+                  <v-list-item-subtitle class="display-1">
+                    Rp
                     {{
-                      pembayaranMasuk(daftar_transaksi)
-                    }}</v-list-item-subtitle
-                  >
+                    pembayaranMasuk(daftar_transaksi)
+                    }}
+                  </v-list-item-subtitle>
                 </v-list-item-content>
                 <v-list-item-icon>
                   <v-icon size="50px" color="primary">mdi-cash-multiple</v-icon>
@@ -64,17 +57,11 @@
             <v-card>
               <v-list-item>
                 <v-list-item-content>
-                  <v-list-item-title class="primary--text"
-                    >Keuntungan</v-list-item-title
-                  >
-                  <v-list-item-subtitle class="display-1"
-                    >Rp {{ keuntungan(daftar_transaksi) }}</v-list-item-subtitle
-                  >
+                  <v-list-item-title class="primary--text">Keuntungan</v-list-item-title>
+                  <v-list-item-subtitle class="display-1">Rp {{ keuntungan(daftar_transaksi) }}</v-list-item-subtitle>
                 </v-list-item-content>
                 <v-list-item-icon>
-                  <v-icon size="50px" color="primary"
-                    >mdi-flower-tulip-outline</v-icon
-                  >
+                  <v-icon size="50px" color="primary">mdi-flower-tulip-outline</v-icon>
                 </v-list-item-icon>
               </v-list-item>
             </v-card>
@@ -83,12 +70,8 @@
             <v-card>
               <v-list-item>
                 <v-list-item-content>
-                  <v-list-item-title class="primary--text"
-                    >Jumlah Transaksi</v-list-item-title
-                  >
-                  <v-list-item-subtitle class="display-1">
-                    {{ daftar_transaksi.length }}
-                  </v-list-item-subtitle>
+                  <v-list-item-title class="primary--text">Jumlah Transaksi</v-list-item-title>
+                  <v-list-item-subtitle class="display-1">{{ daftar_transaksi.length }}</v-list-item-subtitle>
                 </v-list-item-content>
                 <v-list-item-icon>
                   <v-icon size="50px" color="primary">mdi-transition</v-icon>
@@ -105,17 +88,18 @@
               <v-card-title>Riwayat pembayaran</v-card-title>
               <!-- <pre>{{daftar_transaksi}}</pre> -->
               <v-data-table :headers="header" :items="daftar_transaksi">
-                <template v-slot:item.created_at="{ item }">{{
+                <template v-slot:item.created_at="{ item }">
+                  {{
                   $moment(item.created_at).format('Do MMM YYYY, h:mm a')
-                }}</template>
+                  }}
+                </template>
                 <template v-slot:item.id="{ item }">
                   <v-btn
                     text
                     small
                     color="primary"
                     @click.stop="detailTransaksi(item.id)"
-                    >Lihat detail</v-btn
-                  >
+                  >Lihat detail</v-btn>
                 </template>
               </v-data-table>
             </v-card>
@@ -135,38 +119,42 @@
         <v-card-text>
           <div>
             {{
-              $moment(this.transaksi.created_at).format('hh:mm a, Do MMMM Y')
+            $moment(this.transaksi.created_at).format('hh:mm a, Do MMMM Y')
             }}
           </div>
           <div>
             <span class="primary--text">Nomor transaksi</span>
-            <span class="font-weight-medium float-right">{{
+            <span class="font-weight-medium float-right">
+              {{
               this.transaksi.id
-            }}</span>
+              }}
+            </span>
           </div>
           <div>
             <span class="primary--text">Pembeli</span>
-            <span class="font-weight-medium float-right">{{
+            <span class="font-weight-medium float-right">
+              {{
               this.transaksi.siswa.nama
-            }}</span>
+              }}
+            </span>
           </div>
           <div>
             <span class="primary--text">Kasir</span>
-            <span class="font-weight-medium float-right">{{
+            <span class="font-weight-medium float-right">
+              {{
               this.transaksi.created_by.name
-            }}</span>
+              }}
+            </span>
           </div>
           <div>
             <span class="primary--text">Nominal</span>
-            <span class="font-weight-medium float-right"
-              >Rp {{ this.transaksi.nominal }}</span
-            >
+            <span class="font-weight-medium float-right">Rp {{ this.transaksi.nominal }}</span>
           </div>
           <!-- <div>
             <v-btn small text color="info" block @click.stop="downloadWithCSS"
               >Simpan kedalam pdf</v-btn
             >
-          </div> -->
+          </div>-->
           <v-list dense class="transparent">
             <template v-for="item in transaksi.detail">
               <v-list-item class="px-0" :key="item.id">
@@ -175,14 +163,14 @@
                 </v-list-item-avatar>
                 <v-list-item-content>
                   <v-list-item-title>{{ item.produk.nama }}</v-list-item-title>
-                  <v-list-item-subtitle>{{
+                  <v-list-item-subtitle>
+                    {{
                     item.produk.nomor
-                  }}</v-list-item-subtitle>
+                    }}
+                  </v-list-item-subtitle>
                 </v-list-item-content>
                 <v-list-item-content class="text-right">
-                  <v-list-item-title
-                    >Rp {{ item.harga_total }}</v-list-item-title
-                  >
+                  <v-list-item-title>Rp {{ item.harga_total }}</v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
             </template>
@@ -250,14 +238,14 @@ export default {
     pembayaranMasuk(detail) {
       let sum = 0
       detail.forEach(el => {
-        sum += el.nominal
+        sum += Number(el.nominal)
       })
       return sum
     },
     keuntungan(detail) {
       let sum = 0
       detail.forEach(el => {
-        sum += el.keuntungan
+        sum += Number(el.keuntungan)
       })
       return sum
     },
