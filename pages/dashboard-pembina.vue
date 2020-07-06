@@ -303,7 +303,7 @@ export default {
     saldoTotal(detail) {
       let sum = 0
       detail.forEach(el => {
-        sum += el.saldo_digitcard + el.saldo_total
+        sum += Number(el.saldo_digitcard) + Number(el.saldo_total)
       })
       return sum
     },
