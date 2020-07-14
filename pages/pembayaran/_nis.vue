@@ -20,9 +20,7 @@
             <v-list-item-content>
               <v-list-item-title>{{ siswa.nama }}</v-list-item-title>
               <v-list-item-subtitle>{{ siswa.nis }}</v-list-item-subtitle>
-              <v-list-item-subtitle
-                >Rp {{ siswa.saldo_digitcard }}</v-list-item-subtitle
-              >
+              <v-list-item-subtitle>Rp {{ siswa.saldo_digitcard }}</v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
         </v-card>
@@ -58,17 +56,46 @@
         </v-card>
       </v-flex>-->
       <v-flex>
-        <v-text-field
-          autofocus
-          type="number"
-          label="Masukan nomor produk"
-          solo
-          v-model="nomor_produk"
-          hide-details
-          append-icon="mdi-plus"
-          class="py-4"
-          v-on:keyup.enter="getProduk(nomor_produk)"
-        ></v-text-field>
+        <v-row class="py-0 my-0" v-show="toggleSearch">
+          <v-col cols="10" class="pr-0 py-0">
+            <v-autocomplete
+              autofocus
+              solo
+              v-model="produk_dipilih"
+              label="Cari produk"
+              class="py-4"
+              hide-details
+              item-value="nomor"
+              :items="produk"
+              item-text="nama"
+            ></v-autocomplete>
+          </v-col>
+          <v-col cols="2" class="text-center my-auto pl-0">
+            <v-btn tile icon color="green" dark @click="toggleSearch = !toggleSearch">
+              <v-icon>mdi-barcode-scan</v-icon>
+            </v-btn>
+          </v-col>
+        </v-row>
+        <v-row class="py-0 my-0" v-show="!toggleSearch">
+          <v-col cols="10" class="pr-0 py-0">
+            <v-text-field
+              autofocus
+              label="Masukan nomor produk"
+              solo
+              v-model="nomor_produk"
+              hide-details
+              append-icon="mdi-plus"
+              class="py-4"
+              v-on:keyup.enter="getProduk(nomor_produk)"
+            ></v-text-field>
+          </v-col>
+          <v-col cols="2" class="text-center my-auto pl-0">
+            <v-btn tile icon color="green" dark @click="toggleSearch = !toggleSearch">
+              <v-icon>mdi-keyboard</v-icon>
+            </v-btn>
+          </v-col>
+        </v-row>
+
         <v-divider></v-divider>
 
         <v-list class="transparent" style="min-height:40vh">
@@ -84,11 +111,7 @@
             <div :key="item.id">
               <v-list-item two-line>
                 <v-list-item-avatar class="my-auto">
-                  <v-text-field
-                    v-model="item.jumlah_beli"
-                    class="text-center headline"
-                    flat
-                  ></v-text-field>
+                  <v-text-field v-model="item.jumlah_beli" class="text-center headline" flat></v-text-field>
                   <!-- <span class="headline">{{item.jumlah_beli}}</span> -->
                 </v-list-item-avatar>
                 <v-list-item-content>
@@ -116,9 +139,7 @@
             <v-list-item-title>Jumlah</v-list-item-title>
           </v-list-item-content>
           <v-list-item-content class="text-right">
-            <v-list-item-title class="headline"
-              >Rp. {{ hargaTotal(detail) }}</v-list-item-title
-            >
+            <v-list-item-title class="headline">Rp. {{ hargaTotal(detail) }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
         <v-btn block color="primary" @click.stop="bayar()">Bayar</v-btn>
@@ -170,7 +191,10 @@ export default {
         status: false,
         msg: null
       },
-      detail: []
+      detail: [],
+      produk_dipilih: '',
+      produk: [],
+      toggleSearch: true
     }
   },
   methods: {
@@ -216,6 +240,9 @@ export default {
         .indexOf(obj.id)
       this.detail.splice(removeIndex, 1)
     },
+    toggle() {
+      this.toggleSearch = !toggleSearch
+    },
     async bayar() {
       if (this.detail.length != 0) {
         try {
@@ -242,15 +269,28 @@ export default {
         this.error.status = true
         this.error.msg = 'Silahkan masukan produk terlebih dahulu'
       }
+    },
+    async getAllProduk() {
+      try {
+        const res = await this.$axios.get('produk')
+        this.produk = res.data
+        console.log(res)
+      } catch (e) {
+        console.error(e)
+      }
     }
   },
   watch: {
     nomor_produk: function(val) {
       if (val.length >= 4) this.getProduk(val)
+    },
+    produk_dipilih: function(val) {
+      this.getProduk(val)
     }
   },
   computed: {},
   mounted() {
+    this.getAllProduk()
     this.getSiswa(this.$route.params.nis)
     console.log(this.$route.params.nis)
   }
@@ -272,5 +312,6 @@ export default {
 }
 .transparent {
   background: rgba(255, 255, 255, 0.8) !important;
-}</style
+}
+</style
 >>
